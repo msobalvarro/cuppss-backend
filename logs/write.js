@@ -6,7 +6,7 @@ module.exports = (err = '') => {
     let errorsExist = ''
     const date = new Date()
 
-    const archiveName = './internal.log'
+    const archiveName = './logs.log'
 
     fs.readFile(archiveName, (errorRead, buf) => {
         if(errorRead) {

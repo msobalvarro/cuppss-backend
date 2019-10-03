@@ -1,12 +1,13 @@
 const express = require('express')
 const router = express.Router()
-const jwt = require('jsonwebtoken')
-const Session = require('../controller/session')
+// const jwt = require('jsonwebtoken')
+const query = require('../config/query')
+const queries = require('../controller/queries')
 const { check, validationResult } = require('express-validator')
 
 require('dotenv').config()
 
-const { JWTSECRET } = process.env
+// const { JWTSECRET } = process.env
 
 router.get('/', (req, res) => {
     res.status(500).send('Server Error')
@@ -15,7 +16,7 @@ router.get('/', (req, res) => {
 router.post('/', [
     check('username', 'Please include a valid user name'),
     check('password', 'Password is required'),
-], (req, res) => {
+], async (req, res) => {
     const errors = validationResult(req)
 
     if (!errors.isEmpty()) {
@@ -25,8 +26,9 @@ router.post('/', [
     // const { username, password } = req.body
 
     try {
-        const data = Session.login()
-        res.send(data)
+        query(queries.login, [], (results) => {
+            return res.json(results)
+        })
     } catch (error) {
         /**Error information */
         const response = {
