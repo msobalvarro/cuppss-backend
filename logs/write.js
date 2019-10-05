@@ -1,4 +1,3 @@
-const fs = require('fs')
 const log4js = require('log4js')
 
 /**Register new a log */

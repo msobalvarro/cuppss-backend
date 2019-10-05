@@ -1,11 +1,10 @@
 const express = require('express')
-// const jwt = require('')
 const bodyParse = require('body-parser')
 const app = express()
 const WriteError = require('./logs/write')
 require('dotenv').config()
 
-const { JWTSECRET, PORT } = process.env
+const { PORT } = process.env
 
 const data = {
 	app: true, // INT
