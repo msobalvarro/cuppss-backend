@@ -1,5 +1,6 @@
 const express = require('express')
 // const jwt = require('')
+const bodyParse = require('body-parser')
 const app = express()
 const WriteError = require('./logs/write')
 require('dotenv').config()
@@ -11,9 +12,13 @@ const data = {
 	language: 'node' // STRING
 }
 
+// app.use(bodyParse.urlencoded({ extended: true }))
+
+app.use(bodyParse.json())
+
 app.get('/', (req, res) => {
-	res.send(req.path)
-	WriteError('HOLA KE ASE')
+	res.send('Api Running')
+	WriteError('TEST Log')
 })
 
 app.use('/login', require('./middleware/auth'))

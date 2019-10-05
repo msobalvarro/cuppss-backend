@@ -19,7 +19,7 @@ module.exports = async (str = '', params = [], callback = (r = {}) => {}) => {
     await conection.connect(
         (errConnect) => {
             if (errConnect) {
-                writeError(errConnect)
+                writeError(`query.js - error in connect to db | ${errConnect}`)
                 throw errConnect
             }
         }
@@ -28,17 +28,17 @@ module.exports = async (str = '', params = [], callback = (r = {}) => {}) => {
     /**Consult */
     await conection.query(str, params, (errQuery, results) => {
         if (errQuery) {
-            writeError(errQuery)
+            writeError(`query.js - error in execute query | ${errQuery}`)
             throw errQuery
-        }
-        
-        callback(results)
+        } else {
+            callback(results)
+        }        
     })
 
     conection.end(
         (errEnd) => {
             if (errEnd) {
-                writeError(errEnd)
+                writeError(`query.js - error in close conection | ${errEnd}`)
                 throw errEnd
             }
         }
