@@ -2,6 +2,7 @@ const express = require('express')
 const bodyParse = require('body-parser')
 const app = express()
 const WriteError = require('./logs/write')
+const auth = require('./middleware/auth')
 require('dotenv').config()
 
 const { PORT } = process.env
@@ -15,11 +16,11 @@ const data = {
 
 app.use(bodyParse.json())
 
-app.get('/', (req, res) => {
-	res.send('Api Running')
+app.get('/', auth, (req, res) => {
+	res.json(req.user)
 	WriteError('TEST Log')
 })
 
-app.use('/login', require('./middleware/auth'))
+app.use('/login', require('./controller/login'))
 
 app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`))

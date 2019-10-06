@@ -6,7 +6,7 @@ module.exports = (errStr = '') => {
     log4js.configure({
         appenders: {
             logs: {
-                filename: './logs.log',
+                filename: './logs/logs.log',
                 type: 'file'
             }
         },
