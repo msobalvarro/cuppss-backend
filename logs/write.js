@@ -1,26 +1,30 @@
-const log4js = require('log4js')
+const log = require('simple-node-logger').createSimpleLogger('./logs/logs.log')
 
 /**Register new a log */
-module.exports = (errStr = '') => {
+module.exports = (errStr = '', type = 'warn') => {
 
-    log4js.configure({
-        appenders: {
-            logs: {
-                filename: './logs/logs.log',
-                type: 'file'
-            }
-        },
-        categories: {
-            default: {
-                appenders: ['logs'],
-                level: 'error'
-            }
-        }
-    })
+    log.setLevel(type)
 
-    const logger = log4js.getLogger('logs')
+    log.log('warn', errStr)
 
-    logger.log(errStr)
+    // log4js.configure({
+    //     appenders: {
+    //         logs: {
+    //             filename: `logs/logs.log`,
+    //             type: 'file'
+    //         }
+    //     },
+    //     categories: {
+    //         default: {
+    //             appenders: ['logs'],
+    //             level: 'error'
+    //         }
+    //     }
+    // })
+
+    // const logger = log4js.getLogger('logs')
+
+    // logger.trace(errStr)
 
     // const newErrorText = err
     // let errorsExist = ''

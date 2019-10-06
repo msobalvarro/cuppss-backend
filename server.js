@@ -16,9 +16,8 @@ const data = {
 
 app.use(bodyParse.json())
 
-app.get('/', auth, (req, res) => {
-	res.json(req.user)
-	WriteError('TEST Log')
+app.get('/', (req, res) => {
+	res.send('Api runing')
 })
 
 app.use('/login', require('./controller/login'))
