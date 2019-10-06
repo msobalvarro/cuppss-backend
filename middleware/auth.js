@@ -20,7 +20,7 @@ module.exports = (req, res, next) => {
 
         next()
     } catch (errorMessagge) {
-        WriteError(errorMessagge)
+        WriteError(`auth.js - error in authentication token | ${errorMessagge}`)
 
         return res.status(401).json({
             error: true,

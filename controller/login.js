@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 const WriteError = require('../logs/write')
 const query = require('../config/query')
 const queries = require('./queries')
+const os = require('os')
 const { check, validationResult } = require('express-validator')
 require('dotenv').config()
 
@@ -33,7 +34,7 @@ router.post('/', [
 
         query(queries.login, [email, password], (results) => {
 
-            if (results.length > 0) {
+            if (results[0].length > 0) {
                 /**Const return data db */
                 const result = results[0][0]
 
@@ -56,7 +57,7 @@ router.post('/', [
                     },
                     (errSign, token) => {
                         if (errSign) {
-                            WriteError(`auth.js - error in generate token | ${errSign}`)
+                            WriteError(`login.js - error in generate token | ${errSign}`)
                             throw errSign
                         } else {
                             /**Concat new token proprerty to data */
@@ -70,8 +71,13 @@ router.post('/', [
             else {
                 const response = {
                     error: true,
-                    message: 'Email or password is incorrect'
+                    message: 'Email or password is incorrect',
+                    data: req.useragent
                 }
+
+                // console.log(req.useragent)
+
+                WriteError(`Login Failed`, 'warn')
 
                 res.status(401).send(response)
             }
@@ -79,7 +85,7 @@ router.post('/', [
         })
     } catch (error) {
         /**Error information */
-        WriteError(`auth.js - catch execute query | ${error}`)
+        WriteError(`login.js - catch execute query | ${error}`)
 
         const response = {
             error: true,

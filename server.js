@@ -1,25 +1,26 @@
 const express = require('express')
 const bodyParse = require('body-parser')
 const app = express()
-const WriteError = require('./logs/write')
-const auth = require('./middleware/auth')
+const useragent = require('express-useragent')
 require('dotenv').config()
 
 const { PORT } = process.env
 
-const data = {
-	app: true, // INT
-	language: 'node' // STRING
-}
+app.use(useragent.express())
 
-// app.use(bodyParse.urlencoded({ extended: true }))
-
+// User for parse get json petition
 app.use(bodyParse.json())
 
+// Api get and post index 
 app.get('/', (req, res) => {
 	res.send('Api runing')
 })
 
+app.post('/', (req, res) => {
+	res.status(500).send('Server error')
+})
+
+// Api authentication login
 app.use('/login', require('./controller/login'))
 
 app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`))
