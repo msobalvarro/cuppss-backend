@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken')
 const WriteError = require('../logs/write')
 const query = require('../config/query')
 const queries = require('./queries')
-const os = require('os')
 const { check, validationResult } = require('express-validator')
 require('dotenv').config()
 
@@ -22,7 +21,7 @@ router.post('/', [
     const errors = validationResult(req)
 
     if (!errors.isEmpty()) {
-        return res.status(400).json({
+        return res.status(401).json({
             error: true,
             message: errors.array()[0].msg
         })
@@ -30,7 +29,7 @@ router.post('/', [
 
 
     try {
-        const { email, password } = req.body
+        const { email, password, mobile, deviceInfo } = req.body
 
         query(queries.login, [email, password], (results) => {
 
@@ -62,8 +61,8 @@ router.post('/', [
                         } else {
                             /**Concat new token proprerty to data */
                             const newData = Object.assign(data, { token })
-                            
-                            return res.json(newData)
+
+                            return res.status(200).json(newData)
                         }
                     }
                 )
@@ -71,8 +70,7 @@ router.post('/', [
             else {
                 const response = {
                     error: true,
-                    message: 'Email or password is incorrect',
-                    data: req.useragent
+                    message: 'Email or password is incorrect'
                 }
 
                 // console.log(req.useragent)
