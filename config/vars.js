@@ -1,4 +1,4 @@
-if (process.env.NODE_ENV !== 'production') require('dotenv').config()
+require('dotenv').config({ silent: process.env.NODE_ENV === 'production' })
 
 // Imports all envs
 const { PORT, DBHOST, DBNAME, DBUSER, DBPASS, JWTSECRET } = process.env

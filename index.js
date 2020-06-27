@@ -8,6 +8,10 @@ const app = express()
 const useragent = require('express-useragent')
 const auth = require('./middleware/auth')
 
+// Import plugins
+const cors = require('cors')
+const helmet = require('helmet')
+
 // Import controllers
 const login = require('./controller/login')
 const register = require("./controller/register")
@@ -16,6 +20,10 @@ const register = require("./controller/register")
 const { PORT } = require("./config/vars")
 
 app.use(useragent.express())
+
+app.use(helmet())
+
+app.use(cors())
 
 // User for parse get json petition
 app.use(bodyParse.json())
@@ -26,7 +34,7 @@ app.get('/', (_, res) => {
 })
 
 // Api authentication login
-app.use('/login', require('./controller/login'))
+app.use('/login', login)
 
 // Api for register user
 app.use("/register", register)

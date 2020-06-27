@@ -31,56 +31,57 @@ router.post('/', [
     try {
         const { email, password, mobile, deviceInfo } = req.body
 
-        query(queries.login, [email, password], (results) => {
+        query(queries.login, [email, password])
+            .then((results) => {
 
-            if (results[0].length > 0) {
-                /**Const return data db */
-                const result = results[0][0]
+                if (results[0].length > 0) {
+                    /**Const return data db */
+                    const result = results[0][0]
 
-                /**Const return data user */
-                const data = {
-                    name: `${result.FirstName} ${result.LastName}`,
-                    username: result.User,
-                }
-
-                const playload = {
-                    user: data
-                }
-
-                // Generate Toke user
-                jwt.sign(
-                    playload,
-                    JWTSECRET,
-                    {
-                        expiresIn: 36000
-                    },
-                    (errSign, token) => {
-                        if (errSign) {
-                            WriteError(`login.js - error in generate token | ${errSign}`)
-                            throw errSign
-                        } else {
-                            /**Concat new token proprerty to data */
-                            const newData = Object.assign(data, { token })
-
-                            return res.status(200).json(newData)
-                        }
+                    /**Const return data user */
+                    const data = {
+                        name: `${result.FirstName} ${result.LastName}`,
+                        username: result.User,
                     }
-                )
-            }
-            else {
-                const response = {
-                    error: true,
-                    message: 'Email or password is incorrect'
+
+                    const playload = {
+                        user: data
+                    }
+
+                    // Generate Toke user
+                    jwt.sign(
+                        playload,
+                        JWTSECRET,
+                        {
+                            expiresIn: 36000
+                        },
+                        (errSign, token) => {
+                            if (errSign) {
+                                WriteError(`login.js - error in generate token | ${errSign}`)
+                                throw errSign
+                            } else {
+                                /**Concat new token proprerty to data */
+                                const newData = Object.assign(data, { token })
+
+                                return res.status(200).json(newData)
+                            }
+                        }
+                    )
+                }
+                else {
+                    const response = {
+                        error: true,
+                        message: 'Email or password is incorrect'
+                    }
+
+                    // console.log(req.useragent)
+
+                    WriteError(`Login Failed`, 'warn')
+
+                    res.status(401).send(response)
                 }
 
-                // console.log(req.useragent)
-
-                WriteError(`Login Failed`, 'warn')
-
-                res.status(401).send(response)
-            }
-
-        })
+            })
     } catch (error) {
         /**Error information */
         WriteError(`login.js - catch execute query | ${error}`)
