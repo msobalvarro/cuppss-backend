@@ -9,7 +9,7 @@ const useragent = require('express-useragent')
 const auth = require('./middleware/auth')
 
 // Import controllers
-const login = require('./controller/exceptions')
+const login = require('./controller/login')
 const register = require("./controller/register")
 
 // Imports vars
@@ -30,8 +30,5 @@ app.use('/login', require('./controller/login'))
 
 // Api for register user
 app.use("/register", register)
-
-// Api Control exceptions App
-app.use('/controlError', auth, login)
 
 app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`))

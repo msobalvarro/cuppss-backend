@@ -1,9 +1,10 @@
 const jwt = require('jsonwebtoken')
+
+// Imports write erros
 const WriteError = require('../logs/write')
-require('dotenv').config()
 
-const { JWTSECRET } = process.env
-
+// Import global vars
+const { JWTSECRET } = require("../config/vars")
 
 module.exports = (req, res, next) => {
     const token = req.header('x-auth-token')
@@ -20,9 +21,9 @@ module.exports = (req, res, next) => {
 
         next()
     } catch (errorMessagge) {
-        WriteError(`auth.js - error in authentication token | ${errorMessagge}`)
+        WriteError(`auth.js - error in authentication token`)
 
-        return res.status(401).json({
+        return res.status(401).send({
             error: true,
             message: errorMessagge
         })
