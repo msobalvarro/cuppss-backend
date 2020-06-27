@@ -3,7 +3,7 @@ const router = express.Router()
 const jwt = require('jsonwebtoken')
 const WriteError = require('../logs/write')
 const query = require('../config/query')
-const queries = require('./queries')
+const queries = require('../config/queries')
 const { check, validationResult } = require('express-validator')
 require('dotenv').config()
 
