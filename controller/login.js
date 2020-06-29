@@ -5,9 +5,7 @@ const WriteError = require('../logs/write')
 const query = require('../config/query')
 const queries = require('../config/queries')
 const { check, validationResult } = require('express-validator')
-require('dotenv').config()
-
-const { JWTSECRET } = process.env
+const { JWTSECRET } = require("../config/vars")
 
 router.get('/', (req, res) => {
     res.status(500).send('Server Error')
