@@ -1,5 +1,6 @@
 const express = require('express')
 const bodyParse = require('body-parser')
+const path = require("path")
 
 // initialize app
 const app = express()
@@ -15,6 +16,7 @@ const helmet = require('helmet')
 // Import controllers
 const login = require('./controller/login')
 const register = require("./controller/register")
+const items = require("./controller/items")
 
 // Imports vars
 const { PORT } = require("./config/vars")
@@ -28,9 +30,12 @@ app.use(cors())
 // User for parse get json petition
 app.use(bodyParse.json())
 
+app.use(express.static(path.join(__dirname, 'build')))
+
+
 // Api get and post index 
 app.get('/', (_, res) => {
-	res.send("aplication runing")
+	res.sendFile(path.join(__dirname, 'build', 'index.html'))
 })
 
 // Api authentication login
@@ -38,5 +43,8 @@ app.use('/login', login)
 
 // Api for register user
 app.use("/register", register)
+
+// Api for create and modify item
+app.use("/items", items)
 
 app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`))
